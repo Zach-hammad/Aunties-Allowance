@@ -1,0 +1,5 @@
+Flask
+python-dotenv
+plaid-python
+requests
+googlemaps
