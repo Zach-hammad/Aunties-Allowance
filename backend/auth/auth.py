@@ -3,6 +3,7 @@ from flask import request, jsonify, g
 from jose import jwt
 import requests
 import os
+import logging
 
 AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
 API_IDENTIFIER = os.getenv("API_IDENTIFIER")
@@ -14,24 +15,31 @@ class AuthError(Exception):
         self.status_code = status_code
 
 def get_token_auth_header():
+    logging.debug("🔒 get_token_auth_header called")
     auth = request.headers.get("Authorization", None)
+    logging.debug(f"Authorization header: {auth}")
     if not auth:
+        logging.error("❌ Authorization header is missing")
         raise AuthError({"code": "authorization_header_missing",
                          "description": "Authorization header is expected"}, 401)
 
     parts = auth.split()
 
     if parts[0].lower() != "bearer":
+        logging.error("❌ Authorization header must start with Bearer")
         raise AuthError({"code": "invalid_header",
                          "description": "Authorization header must start with Bearer"}, 401)
     elif len(parts) == 1:
+        logging.error("❌ Token not found in Authorization header")
         raise AuthError({"code": "invalid_header",
                          "description": "Token not found"}, 401)
     elif len(parts) > 2:
+        logging.error("❌ Authorization header must be Bearer token")
         raise AuthError({"code": "invalid_header",
                          "description": "Authorization header must be Bearer token"}, 401)
 
     token = parts[1]
+    logging.debug(f"Extracted token: {token}")
     return token
 
 def requires_auth(f):

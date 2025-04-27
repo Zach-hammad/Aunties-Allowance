@@ -6,7 +6,7 @@ import pytz
 
 DEFAULT_TIMEZONE = "America/New_York"
 def suggest_tasks_controller():
-    busy_slots = request.json.get("busy_slots")
+    busy_slots = request.json.get("busy_slots", [])
     user_behavior = request.json.get("user_behavior")
     timezone = request.json.get("timezone", DEFAULT_TIMEZONE)
 

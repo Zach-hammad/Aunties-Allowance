@@ -5,7 +5,14 @@ from routes.finance_routes import finance_bp
 from routes.commute_routes import commute_bp
 from routes.calendar_routes import calendar_bp
 from routes.tasks_routes import tasks_bp 
+from auth.auth import requires_auth
+import logging
 
+
+logging.basicConfig(
+    level=logging.DEBUG,  # Set the logging level to DEBUG
+    format="%(asctime)s - %(levelname)s - %(message)s"  # Include timestamps and log levels
+)
 
 
 def create_app():
@@ -19,8 +26,13 @@ def create_app():
     app.register_blueprint(calendar_bp)
     app.register_blueprint(tasks_bp) 
 
+
     return app
 
 if __name__ == "__main__":
+    logging.debug("🔄 Initializing Flask app...")
     app = create_app()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    logging.debug("🔄 Configuring CORS...")
+    app.app_context().push()
+    logging.debug("🚀 Starting Flask app...")
+    app.run(host="10.250.102.152", port=5000, debug=True)

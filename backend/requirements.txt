@@ -3,3 +3,9 @@ python-dotenv
 plaid-python
 requests
 googlemaps
+icalendar
+pytz
+pandas
+
+
+
